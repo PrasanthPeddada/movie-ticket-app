@@ -1,0 +1,98 @@
+<div class="payment-container">
+  <div class="container">
+    <div class="page-header">
+      <h1>Payment</h1>
+      <p>Complete your booking by making the payment</p>
+    </div>
+
+    <div *ngIf="!bookingData" class="error">
+      <p>No booking data found. Please start a new booking.</p>
+      <button (click)="router.navigate(['/movies'])" class="btn btn-primary">Browse Movies</button>
+    </div>
+
+    <div *ngIf="bookingData" class="payment-content">
+      <div class="payment-form-section">
+        <div class="payment-form-card">
+          <h2>Payment Details</h2>
+          
+          <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()" class="payment-form">
+            <div class="form-group">
+              <label for="paymentMethod">Payment Method</label>
+              <select 
+                id="paymentMethod" 
+                formControlName="paymentMethod" 
+                class="form-control"
+                [class.is-invalid]="f['paymentMethod'].touched && f['paymentMethod'].errors"
+              >
+                <option value="">Select Payment Method</option>
+                <option *ngFor="let method of paymentMethods" [value]="method.value">
+                  {{ method.label }}
+                </option>
+              </select>
+              <div *ngIf="f['paymentMethod'].touched && f['paymentMethod'].errors" class="invalid-feedback">
+                <div *ngIf="f['paymentMethod'].errors['required']">Payment method is required</div>
+              </div>
+            </div>
+
+            <div class="payment-info">
+              <p><strong>Secure Payment Gateway</strong></p>
+              <p>Your payment will be processed securely through Razorpay. You can pay using:</p>
+              <ul>
+                <li>Credit/Debit Cards</li>
+                <li>UPI</li>
+                <li>Net Banking</li>
+                <li>Digital Wallets</li>
+              </ul>
+            </div>
+
+            <div *ngIf="error" class="alert alert-danger">
+              {{ error }}
+            </div>
+
+            <div *ngIf="success" class="alert alert-success">
+              {{ success }}
+            </div>
+
+            <button 
+              type="submit" 
+              class="btn btn-primary btn-block"
+              [disabled]="paymentForm.invalid || loading || !razorpayLoaded"
+            >
+              <span *ngIf="loading" class="spinner"></span>
+              {{ loading ? 'Processing Payment...' : 'Pay ₹' + bookingData?.totalAmount }}
+            </button>
+            
+            <div *ngIf="!razorpayLoaded" class="alert alert-info">
+              <small>Loading payment gateway...</small>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="booking-summary">
+        <h3>Booking Summary</h3>
+        
+        <div class="summary-item">
+          <span>Selected Seats:</span>
+          <span>
+            <ng-container *ngIf="bookingData?.selectedSeats?.length > 0">
+              <div *ngFor="let seatData of bookingData.selectedSeats">
+                {{ getSeatLabel(seatData) }}
+              </div>
+            </ng-container>
+          </span>
+        </div>
+        
+        <div class="summary-item">
+          <span>Number of Seats:</span>
+          <span>{{ bookingData?.selectedSeats?.length || 0 }}</span>
+        </div>
+        
+        <div class="summary-item total">
+          <span>Total Amount:</span>
+          <span>₹{{ bookingData?.totalAmount || 0 }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

@@ -1,0 +1,81 @@
+.seat-selection {
+  .screen-indicator {
+    text-align: center;
+    margin-bottom: 30px;
+
+    .screen {
+      background: #667eea;
+      color: white;
+      padding: 10px 30px;
+      border-radius: 10px;
+      font-weight: 600;
+      display: inline-block;
+    }
+  }
+
+  .seats-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+  }
+  .seat-row {
+    display: flex;
+    gap: 0.5em;
+  }
+  .seat {
+    padding: 0.5em 1em;
+    border-radius: 4px;
+    background: #eee;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .seat.available {
+    background: #b6fcb6;
+  }
+  .seat.booked {
+    background: #fcb6b6;
+    cursor: not-allowed;
+  }
+  .seat.selected {
+    background: #6ec1e4 !important;
+    color: #fff;
+  }
+
+  .seat-legend {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .seat {
+        width: 20px;
+        height: 20px;
+        border-radius: 4px;
+        cursor: default;
+
+        &.available {
+          background: #27ae60;
+        }
+
+        &.selected {
+          background: #667eea;
+        }
+
+        &.booked {
+          background: #e74c3c;
+        }
+      }
+
+      span {
+        font-size: 14px;
+        color: #2c3e50;
+      }
+    }
+  }
+} 

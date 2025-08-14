@@ -1,0 +1,38 @@
+<header class="header">
+  <div class="container">
+    <div class="header-content">
+      <div class="logo">
+        <a routerLink="/">
+          <h1>MovieTicket</h1>
+        </a>
+      </div>
+
+      <nav class="nav-menu" [class.active]="isMenuOpen">
+        <ul class="nav-list">
+          <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
+          <li><a routerLink="/movies" routerLinkActive="active">Movies</a></li>
+          <li *ngIf="currentUser"><a routerLink="/profile" routerLinkActive="active">Profile</a></li>
+          <li *ngIf="isAdmin()"><a routerLink="/admin" routerLinkActive="active">Admin</a></li>
+        </ul>
+      </nav>
+
+      <div class="user-menu">
+        <div *ngIf="!currentUser" class="auth-buttons">
+          <a routerLink="/login" class="btn btn-outline">Login</a>
+          <a routerLink="/register" class="btn btn-primary">Register</a>
+        </div>
+        
+        <div *ngIf="currentUser" class="user-info">
+          <span class="username">{{ currentUser.firstName }} {{ currentUser.lastName }}</span>
+          <button class="btn btn-outline" (click)="logout()">Logout</button>
+        </div>
+
+        <button class="mobile-menu-btn" (click)="toggleMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header> 

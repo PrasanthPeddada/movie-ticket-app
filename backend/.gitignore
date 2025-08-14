@@ -1,0 +1,35 @@
+# Ignore Maven target directory
+/target/
+
+# Ignore build directory (if any)
+/build/
+
+# Ignore IDE specific files
+### IntelliJ IDEA ###
+.idea/
+*.iml
+out/
+
+### Eclipse ###
+.project
+.classpath
+.settings/
+bin/
+
+# Logs
+*.log
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Environment/Properties files (if you have sensitive info)
+application.properties
+application.yml
+application-*.properties
+application-*.yml
+
+# Temporary files
+*.tmp
+*.bak
+*.swp

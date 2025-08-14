@@ -1,0 +1,42 @@
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>MovieTicket</h3>
+        <p>Your one-stop destination for the best movie booking experience.</p>
+      </div>
+      
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a routerLink="/">Home</a></li>
+          <li><a routerLink="/movies">Movies</a></li>
+          <li><a routerLink="/login">Login</a></li>
+          <li><a routerLink="/register">Register</a></li>
+          <li><a href="#" (click)="openFeedbackForm()">Feedback</a></li>
+        </ul>
+      </div>
+
+      <div class="feedback-modal" *ngIf="showFeedback">
+  <div class="feedback-content">
+    <h3>Your Feedback</h3>
+    <textarea [(ngModel)]="feedbackText" placeholder="Type your feedback here..."></textarea>
+    <div class="feedback-actions">
+      <button class="btn-cancel" (click)="closeFeedbackForm()">Cancel</button>
+      <button class="btn-submit" (click)="submitFeedback()">Submit</button>
+    </div>
+  </div>
+</div>
+      
+      <div class="footer-section">
+        <h4>Contact</h4>
+        <p>Email: info@movieticket.com</p>
+        <p>Phone: +1 (555) 123-4567</p>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; {{ currentYear }} MovieTicket. All rights reserved.</p>
+    </div>
+  </div>
+</footer> 

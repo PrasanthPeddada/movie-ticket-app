@@ -1,0 +1,99 @@
+<div class="admin-dashboard">
+  <div class="container">
+    <div class="page-header">
+      <h1>Admin Dashboard</h1>
+      <p>Manage your movie ticket booking system</p>
+    </div>
+
+    <div *ngIf="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Loading dashboard data...</p>
+    </div>
+
+    <div *ngIf="error" class="error">
+      <p>{{ getErrorMessage() }}</p>
+      <button (click)="loadDashboardData()" class="btn btn-primary">Try Again</button>
+    </div>
+
+    <div *ngIf="!loading && !error" class="dashboard-content">
+      <!-- Statistics Cards -->
+      <div class="stats-grid">
+        <div class="stat-card" [class.error]="userErrors.length > 0">
+          <div class="stat-icon">👥</div>
+          <div class="stat-info">
+            <h3>{{ totalUsers }}</h3>
+            <p>Total Users</p>
+            <small *ngIf="userErrors.length > 0" class="error-text">{{ userErrors[0] }}</small>
+          </div>
+        </div>
+
+        <div class="stat-card" [class.error]="movieErrors.length > 0">
+          <div class="stat-icon">🎬</div>
+          <div class="stat-info">
+            <h3>{{ totalMovies }}</h3>
+            <p>Total Movies</p>
+            <small *ngIf="movieErrors.length > 0" class="error-text">{{ movieErrors[0] }}</small>
+          </div>
+        </div>
+
+        <div class="stat-card" [class.error]="bookingErrors.length > 0">
+          <div class="stat-icon">🎫</div>
+          <div class="stat-info">
+            <h3>{{ totalBookings }}</h3>
+            <p>Total Bookings</p>
+            <small *ngIf="bookingErrors.length > 0" class="error-text">{{ bookingErrors[0] }}</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Bookings -->
+      <div class="recent-bookings">
+        <h2>Recent Bookings</h2>
+        
+        <div *ngIf="recentBookings.length === 0" class="no-bookings">
+          <p>No recent bookings found.</p>
+        </div>
+
+        <div *ngIf="recentBookings.length > 0" class="bookings-list">
+          <div *ngFor="let booking of recentBookings" class="booking-item">
+            <div class="booking-info">
+              <h4>{{ booking.show.movie.title }}</h4>
+              <p>{{ booking.user.name}}</p>
+              <p>{{ booking.show.showTime | date:'medium' }}</p>
+            </div>
+            <div class="booking-status">
+              <span class="status-badge" [class]="booking.status.toLowerCase()">
+                {{ booking.status }}
+              </span>
+              <p class="amount">Rs.{{ booking.totalAmount }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="quick-actions">
+        <h2>Quick Actions</h2>
+        <div class="actions-grid">
+          <a routerLink="/admin/movies" class="action-card">
+            <div class="action-icon">🎬</div>
+            <h3>Manage Movies</h3>
+            <p>Add, edit, or remove movies</p>
+          </a>
+
+          <a routerLink="/admin/users" class="action-card">
+            <div class="action-icon">👥</div>
+            <h3>Manage Users</h3>
+            <p>View and manage user accounts</p>
+          </a>
+
+          <a routerLink="/admin/feedbacks" class="action-card">
+            <div class="action-icon">📝</div>
+            <h3>Feebacks</h3>
+            <p>view user feedbacks</p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

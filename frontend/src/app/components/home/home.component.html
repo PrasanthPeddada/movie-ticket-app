@@ -1,0 +1,83 @@
+<div class="home">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Welcome to MovieTicket</h1>
+      <p>Book your favorite movies with ease and comfort</p>
+      <div class="hero-buttons">
+        <a routerLink="/movies" class="btn btn-primary">Browse Movies</a>
+        <a routerLink="/register" class="btn btn-outline">Sign Up</a>
+      </div>
+    </div>
+    <div class="hero-overlay"></div>
+  </section>
+
+  <!-- Featured Movies Section -->
+  <section class="featured-movies">
+    <div class="container">
+      <h2>Featured Movies</h2>
+      
+      <div *ngIf="loading" class="loading">
+        <div class="spinner"></div>
+        <p>Loading movies...</p>
+      </div>
+
+      <div *ngIf="error" class="error">
+        <p>{{ error }}</p>
+        <button class="btn btn-primary" (click)="loadFeaturedMovies()">Try Again</button>
+      </div>
+
+      <div *ngIf="!loading && !error" class="movies-grid">
+        <div *ngFor="let movie of featuredMovies" class="movie-card">
+          <div class="movie-poster">
+            <img [src]="getPosterUrl(movie)" [alt]="movie.title" (error)="onImageError($event)">
+            <div class="movie-overlay">
+              <a [routerLink]="['/movies', movie.id]" class="btn btn-primary">View Details</a>
+            </div>
+          </div>
+          <div class="movie-info">
+            <h3>{{ movie.title }}</h3>
+            <p class="genre">{{ movie.genre }}</p>
+            <div class="rating">
+              <span class="stars">★★★★★</span>
+              <span class="rating-value">{{ movie.rating }}/10</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="!loading && !error && featuredMovies.length === 0" class="no-movies">
+        <p>No movies available at the moment.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="container">
+      <h2>Why Choose MovieTicket?</h2>
+      <div class="features-grid">
+        <div class="feature">
+          <div class="feature-icon">🎬</div>
+          <h3>Wide Selection</h3>
+          <p>Choose from hundreds of movies across all genres</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">💺</div>
+          <h3>Easy Booking</h3>
+          <p>Book your seats with just a few clicks</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">💰</div>
+          <h3>Best Prices</h3>
+          <p>Get the best deals and discounts on tickets</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">📱</div>
+          <h3>Mobile Friendly</h3>
+          <p>Book tickets on any device, anywhere</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div> 

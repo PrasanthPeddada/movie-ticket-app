@@ -1,0 +1,161 @@
+<div class="profile-container">
+  <div class="container">
+    <div class="page-header">
+      <h1>My Profile</h1>
+      <p>Manage your account information and view booking history</p>
+       
+    </div>
+
+    <div *ngIf="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Loading profile...</p>
+    </div>
+
+    <div *ngIf="!loading" class="profile-content">
+      <div class="profile-sections">
+        <!-- Profile Information -->
+        <div class="profile-section">
+          <h2>Profile Information</h2>
+          
+          <form [formGroup]="profileForm" (ngSubmit)="updateProfile()" class="profile-form">
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <input
+                type="text"
+                id="name"
+                formControlName="name"
+                class="form-control"
+                [class.is-invalid]="f['name'].touched && f['name'].errors"
+              >
+              <div *ngIf="f['name'].touched && f['name'].errors" class="invalid-feedback">
+                <div *ngIf="f['name'].errors['required']">Full name is required</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                formControlName="email"
+                class="form-control"
+                [class.is-invalid]="f['email'].touched && f['email'].errors"
+              >
+              <div *ngIf="f['email'].touched && f['email'].errors" class="invalid-feedback">
+                <div *ngIf="f['email'].errors['required']">Email is required</div>
+                <div *ngIf="f['email'].errors['email']">Please enter a valid email</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="phoneNumber">Phone Number</label>
+              <input
+                type="tel"
+                id="phoneNumber"
+                formControlName="phoneNumber"
+                class="form-control"
+                [class.is-invalid]="f['phoneNumber'].touched && f['phoneNumber'].errors"
+              >
+              <div *ngIf="f['phoneNumber'].touched && f['phoneNumber'].errors" class="invalid-feedback">
+                <div *ngIf="f['phoneNumber'].errors['required']">Phone number is required</div>
+                <div *ngIf="f['phoneNumber'].errors['pattern']">Please enter a valid 10-digit phone number</div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update Profile</button>
+          </form>
+         
+        </div>
+
+        <!-- Change Password -->
+        <div class="profile-section">
+          <h2>Change Password</h2>
+          
+          <form [formGroup]="passwordForm" (ngSubmit)="changePassword()" class="password-form">
+            <div class="form-group">
+              <label for="currentPassword">Current Password</label>
+              <input
+                type="password"
+                id="currentPassword"
+                formControlName="currentPassword"
+                class="form-control"
+                [class.is-invalid]="pf['currentPassword'].touched && pf['currentPassword'].errors"
+              >
+              <div *ngIf="pf['currentPassword'].touched && pf['currentPassword'].errors" class="invalid-feedback">
+                <div *ngIf="pf['currentPassword'].errors['required']">Current password is required</div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="newPassword">New Password</label>
+                <input
+                  type="password"
+                  id="newPassword"
+                  formControlName="newPassword"
+                  class="form-control"
+                  [class.is-invalid]="pf['newPassword'].touched && pf['newPassword'].errors"
+                >
+                <div *ngIf="pf['newPassword'].touched && pf['newPassword'].errors" class="invalid-feedback">
+                  <div *ngIf="pf['newPassword'].errors['required']">New password is required</div>
+                  <div *ngIf="pf['newPassword'].errors['minlength']">Password must be at least 6 characters</div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  formControlName="confirmPassword"
+                  class="form-control"
+                  [class.is-invalid]="pf['confirmPassword'].touched && pf['confirmPassword'].errors"
+                >
+                <div *ngIf="pf['confirmPassword'].touched && pf['confirmPassword'].errors" class="invalid-feedback">
+                  <div *ngIf="pf['confirmPassword'].errors['required']">Please confirm your password</div>
+                  <div *ngIf="pf['confirmPassword'].errors['passwordMismatch']">Passwords do not match</div>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Change Password</button>
+          </form>
+         
+        </div>
+      </div>
+
+       
+
+      <!-- Booking History -->
+      <div class="booking-history">
+        <h2>Booking History</h2>
+        
+        <div *ngIf="userBookings.length === 0" class="no-bookings">
+          <p>No booking history found.</p>
+        </div>
+
+        <div *ngIf="userBookings.length > 0" class="bookings-list">
+          <div *ngFor="let booking of userBookings" class="booking-item">
+            <div class="booking-info">
+              <h4>{{ booking.show.movie.title }}</h4>
+              <p>{{ booking.show.showTime | date:'medium' }}</p>
+              <p>{{ booking.show.screen.theater.name }} - Screen {{ booking.show.screen.name }}</p>
+            </div>
+            <div class="booking-status">
+              <span class="status-badge" [class]="booking.status.toLowerCase()">
+                {{ booking.status }}
+              </span>
+              <p class="amount">₹{{ booking.totalAmount }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alerts -->
+     <div *ngIf="success" class="alert alert-success">{{success}}</div>
+          <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+    
+    
+  </div>
+</div> 

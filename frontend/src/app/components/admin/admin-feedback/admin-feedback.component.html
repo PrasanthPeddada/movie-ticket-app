@@ -1,0 +1,9 @@
+<ul class="feedback-list">
+  <li *ngFor="let user of users">
+    <strong>{{ user.name || 'Anonymous User' }}</strong>
+    <span class="feedback-text">
+      — {{ user.feedback || 'No feedback given' }}
+    </span>
+  </li>
+</ul>
+

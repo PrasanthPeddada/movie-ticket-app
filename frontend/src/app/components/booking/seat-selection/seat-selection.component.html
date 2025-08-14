@@ -1,0 +1,40 @@
+<div class="seat-selection">
+  <div class="screen-indicator">
+    <div class="screen">SCREEN</div>
+  </div>
+
+  <div class="seats-grid">
+    <div *ngFor="let row of [].constructor(totalRows); let rowIndex = index" class="seat-row">
+      <div *ngFor="let col of [].constructor(totalColumns); let colIndex = index"
+           class="seat"
+           [class.selected]="isSeatSelected(rowIndex + 1, colIndex + 1)"
+           [class.booked]="getSeat(rowIndex + 1, colIndex + 1)?.status === 'BOOKED'"
+           [class.available]="getSeat(rowIndex + 1, colIndex + 1) && getSeat(rowIndex + 1, colIndex + 1)?.status !== 'BOOKED'"
+           [class.empty]="!getSeat(rowIndex + 1, colIndex + 1)"
+           (click)="getSeat(rowIndex + 1, colIndex + 1) && getSeat(rowIndex + 1, colIndex + 1)?.status !== 'BOOKED' && onSeatClick(rowIndex + 1, colIndex + 1)"
+      >
+        <ng-container *ngIf="getSeat(rowIndex + 1, colIndex + 1); else emptySeat">
+          {{ getSeatLabel(getSeat(rowIndex + 1, colIndex + 1)) }}
+        </ng-container>
+        <ng-template #emptySeat>
+          <!-- Optionally show a placeholder for empty/unavailable seat -->
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <div class="seat-legend">
+    <div class="legend-item">
+      <div class="seat available"></div>
+      <span>Available</span>
+    </div>
+    <div class="legend-item">
+      <div class="seat selected"></div>
+      <span>Selected</span>
+    </div>
+    <div class="legend-item">
+      <div class="seat booked"></div>
+      <span>Booked</span>
+    </div>
+  </div>
+</div> 

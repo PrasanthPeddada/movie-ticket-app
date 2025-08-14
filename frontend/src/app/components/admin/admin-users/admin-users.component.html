@@ -1,0 +1,70 @@
+<div class="admin-users">
+  <div class="container">
+    <div class="page-header">
+      <h1>Manage Users</h1>
+      <p>View and manage user accounts</p>
+    </div>
+
+    <div *ngIf="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Loading users...</p>
+    </div>
+
+    <div *ngIf="error" class="error">
+      <p>{{ error }}</p>
+      <button (click)="loadUsers()" class="btn btn-primary">Try Again</button>
+    </div>
+
+    <div *ngIf="!loading && !error" class="users-content">
+      <div *ngIf="users.length === 0" class="no-users">
+        <p>No users found.</p>
+      </div>
+
+      <div *ngIf="users.length > 0" class="users-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Verified</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users">
+              <td>{{ user.name }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.phoneNumber }}</td>
+              <td>
+                <span class="role-badge" [class]="user.role.toLowerCase()">
+                  {{ user.role }}
+                </span>
+              </td>
+              <td>
+                <span class="status-badge" [class]="user.active ? 'enabled' : 'disabled'">
+                  {{ user.active ? 'Active' : 'Inactive' }}
+                </span>
+              </td>
+              <td>
+                <span class="status-badge" [class]="user.verified ? 'enabled' : 'disabled'">
+                  {{ user.verified ? 'Verified' : 'Not Verified' }}
+                </span>
+              </td>
+              <td class="actions-cell">
+           
+                <button (click)="toggleUserStatus(user)" class="btn btn-small" [class]="user.active ? 'btn-warning' : 'btn-success'">
+                  {{ user.active ? 'Disable' : 'Enable' }}
+                </button>
+                <button (click)="deleteUser(user.id!)" class="btn btn-small btn-danger">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Modal for Edit User -->
+    

@@ -1,0 +1,80 @@
+<div class="booking-container">
+  <div class="container">
+    <div class="page-header">
+      <h1>Select Your Seats</h1>
+      <p>Choose the best seats for your movie experience</p>
+    </div>
+
+    <div *ngIf="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Loading seat availability...</p>
+    </div>
+
+    <div *ngIf="error" class="error">
+      <p>{{ error }}</p>
+      <button (click)="router.navigate(['/movies'])" class="btn btn-primary">Back to Movies</button>
+    </div>
+
+    <div *ngIf="!loading && !error" class="booking-content">
+      <div class="seat-selection">
+        
+
+        <app-seat-selection
+          [totalRows]="totalRows"
+          [totalColumns]="totalColumns"
+          [allSeats]="allSeats"
+          [selectedSeats]="selectedSeats"
+          [goldSeatPrice]="goldSeatPrice"
+          [silverSeatPrice]="silverSeatPrice"
+          [vipSeatPrice]="vipSeatPrice"
+          (seatSelected)="onSeatSelected($event)">
+        </app-seat-selection>
+
+        
+      </div>
+
+      <div class="booking-summary">
+        <h3>Booking Summary</h3>
+        
+        <div class="summary-item">
+          <span>Selected Seats:</span>
+          <span>{{ getSelectedSeatNumbers() }}</span>
+        </div>
+        
+        <div class="summary-item">
+          <span>Number of Seats:</span>
+          <span>{{ selectedSeats.length }}</span>
+        </div>
+        
+        <div class="summary-item">
+          <span>Price per Seat:</span>
+          <span>
+            <ng-container *ngIf="selectedSeats.length > 0; else noSeat">
+              <div *ngFor="let seatData of selectedSeats; let i = index">
+                Seat {{ getSeatDisplayInfo(seatData).label }} 
+                ({{ getSeatDisplayInfo(seatData).category }}): ₹{{ getSeatDisplayInfo(seatData).price }}
+              </div>
+            </ng-container>
+            <ng-template #noSeat>
+              ₹0
+            </ng-template>
+          </span>
+        </div>
+        
+        <div class="summary-item total">
+          <span>Total Amount:</span>
+          <span>₹{{ getTotalPrice() }}</span>
+        </div>
+
+        <button 
+          (click)="proceedToPayment()" 
+          class="btn btn-primary btn-large"
+          [disabled]="selectedSeats.length === 0"
+          [title]="'Selected seats: ' + selectedSeats.length"
+        >
+          Proceed to Payment ({{ selectedSeats.length }} seats selected)
+        </button>
+      </div>
+    </div>
+  </div>
+</div> 

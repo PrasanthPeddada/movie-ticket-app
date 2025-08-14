@@ -1,0 +1,104 @@
+<div class="movie-detail-container">
+  <div class="container">
+    <div *ngIf="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Loading movie details...</p>
+    </div>
+
+    <div *ngIf="error" class="error">
+      <p>{{ error }}</p>
+      <button (click)="router.navigate(['/movies'])" class="btn btn-primary">Back to Movies</button>
+    </div>
+
+    <div *ngIf="!loading && !error && movie" class="movie-detail">
+      <div class="movie-header">
+        <div class="movie-poster">
+          <img [src]="getPosterUrl(movie)" [alt]="movie.title" (error)="onImageError($event)">
+        </div>
+        
+        <div class="movie-info">
+          <h1>{{ movie.title }}</h1>
+          <div class="movie-meta">
+            <span class="genre">{{ movie.genre }}</span>
+            <span class="duration">{{ movie.durationMinutes }} min</span>
+            <span class="language">{{ movie.language }}</span>
+            <span class="rating">★ {{ movie.rating }}/10</span>
+          </div>
+          
+          <p class="description">{{ movie.description }}</p>
+          
+          <div class="movie-details">
+            <div class="detail-item">
+              <strong>Genre:</strong> {{ movie.genre }}
+            </div>
+            <div class="detail-item">
+              <strong>Language:</strong> {{ movie.language }}
+            </div>
+            <div class="detail-item">
+              <strong>Duration:</strong> {{ movie.durationMinutes }} minutes
+            </div>
+            <div class="detail-item">
+              <strong>Release Date:</strong> {{ movie.releaseDate | date:'longDate' }}
+            </div>
+            <div class="detail-item">
+            <a [href]="movie.trailerUrl" target="_blank" rel="noopener noreferrer">Watch Trailer</a>
+            </div>
+
+          </div>
+
+          <div *ngIf="movie.trailerUrl" class="trailer-section">
+            <h3>Watch Trailer</h3>
+            <iframe 
+              [src]="movie.trailerUrl | safe" 
+              width="100%" 
+              height="315" 
+              frameborder="0" 
+              allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+      </div>
+
+      <div class="shows-section">
+        <h2>Available Shows</h2>
+        
+        <div *ngIf="shows.length === 0" class="no-shows">
+          <p>No shows available for this movie at the moment.</p>
+        </div>
+
+        <div *ngIf="shows.length > 0" class="shows-grid">
+          <div 
+            *ngFor="let show of shows" 
+            class="show-card"
+            [class.selected]="selectedShow?.id === show.id"
+            (click)="selectShow(show)"
+          >
+            <div class="show-time">
+              <div class="date">{{ formatShowTime(show.showTime) }}</div>
+              <div class="theater">{{ show.screen.theater.name }}</div>
+              <div class="screen">Screen {{ show.screen.name }}</div>
+            </div>
+            <div class="show-price">
+              <span><strong>Gold:</strong> ₹{{ show.goldSeatPrice }}</span>
+              <span class="separator">|</span>
+              <span><strong>Silver:</strong> ₹{{ show.silverSeatPrice }}</span>
+              <span class="separator">|</span>
+              <span><strong>VIP:</strong> ₹{{ show.vipSeatPrice }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="selectedShow" class="booking-section">
+          <div class="selected-show">
+            <h3>Selected Show</h3>
+            <p>{{ formatShowTime(selectedShow.showTime) }} - {{ selectedShow.screen.theater.name }}</p>
+            
+          </div>
+          <button (click)="bookShow()" class="btn btn-primary btn-large">
+            Book Tickets
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

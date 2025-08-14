@@ -1,0 +1,78 @@
+<div class="movie-list-container">
+  <div class="container">
+    <div class="page-header">
+      <h1>Movies</h1>
+      <p>Discover and book your favorite movies</p>
+    </div>
+
+    <!-- Search and Filters -->
+    <div class="filters-section">
+      <div class="search-box">
+        <input
+          type="text"
+          [(ngModel)]="searchQuery"
+          (input)="onSearch()"
+          placeholder="Search movies..."
+          class="search-input"
+        >
+        <span class="search-icon">🔍</span>
+      </div>
+
+      <div class="filter-controls">
+        <select [(ngModel)]="selectedGenre" (change)="onGenreChange()" class="genre-select">
+          <option value="">All Genres</option>
+          <option *ngFor="let genre of genres" [value]="genre">{{ genre }}</option>
+        </select>
+        <select [(ngModel)]="selectedLanguage" (change)="onLanguageChange()" class="language-select">
+          <option value="">All Languages</option>
+          <option *ngFor="let language of extractLanguages()" [value]="language">{{ language }}</option>
+        </select>
+
+        <button (click)="clearFilters()" class="btn btn-outline">
+          Clear Filters
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Loading movies...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error" class="error">
+      <p>{{ error }}</p>
+      <button (click)="loadMovies()" class="btn btn-primary">Try Again</button>
+    </div>
+
+    <!-- Movies Grid -->
+    <div *ngIf="!loading && !error" class="movies-section">
+      <div *ngIf="filteredMovies.length === 0" class="no-results">
+        <p>No movies found matching your criteria.</p>
+        <button (click)="clearFilters()" class="btn btn-primary">Clear Filters</button>
+      </div>
+
+      <div *ngIf="filteredMovies.length > 0" class="movies-grid">
+        <div *ngFor="let movie of filteredMovies" class="movie-card">
+          <div class="movie-poster">
+            <img [src]="getPosterUrl(movie)" [alt]="movie.title" (error)="onImageError($event)">
+            <div class="movie-overlay">
+              <a [routerLink]="['/movies', movie.id]" class="btn btn-primary">View Details</a>
+            </div>
+          </div>
+          <div class="movie-info">
+            <h3>{{ movie.title }}</h3>
+            <p class="genre">{{ movie.genre }}</p>
+            <p class="duration">{{ movie.durationMinutes }} min</p>
+            <div class="rating">
+              <span class="stars">★★★★★</span>
+              <span class="rating-value">{{ movie.rating }}/10</span>
+            </div>
+            <p class="description">{{ movie.description | slice:0:100 }}{{ movie.description.length > 100 ? '...' : '' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

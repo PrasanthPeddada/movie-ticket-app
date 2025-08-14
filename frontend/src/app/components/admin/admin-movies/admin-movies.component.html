@@ -1,0 +1,236 @@
+<div class="admin-movies">
+  <div class="container">
+    <div class="page-header">
+      <h1>Manage Movies</h1>
+      <p>Add, edit, or remove movies from the system</p>
+    </div>
+
+    <div *ngIf="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Loading movies...</p>
+    </div>
+
+    <div *ngIf="error" class="error">
+      <p>{{ error }}</p>
+      <button (click)="loadMovies()" class="btn btn-primary">Try Again</button>
+    </div>
+
+    <div *ngIf="!loading && !error" class="movies-content">
+      <div class="actions-bar">
+        <button class="btn btn-primary" (click)="openAddMovie(movieModal)">Add New Movie</button>
+      </div>
+      <div *ngIf="!loading && !error" class="movies-content">
+      <div class="actions-bar">
+      <button class="btn btn-primary" (click)="modalService.open(theaterModal)">Add Theater</button>
+      </div>
+
+
+      <div *ngIf="movies.length === 0" class="no-movies">
+        <p>No movies found.</p>
+      </div>
+
+      <div *ngIf="movies.length > 0" class="movies-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Poster</th>
+              <th>Title</th>
+              <th>Genre</th>
+              <th>Duration</th>
+              <th>Rating</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let movie of movies">
+              <td class="poster-cell">
+                <img [src]="movie.posterUrl" [alt]="movie.title" class="movie-poster">
+              </td>
+              <td>{{ movie.title }}</td>
+              <td>{{ movie.genre }}</td>
+              <td>{{ movie.durationMinutes }} min</td>
+              <td>{{ movie.rating }}/10</td>
+              <td>
+                <span class="status-badge" [class]="movie.isActive ? 'enabled' : 'disabled'">
+                  {{ movie.isActive ? 'Active' : 'Inactive' }}
+                </span>
+              </td>
+              <td class="actions-cell">
+                <button class="btn btn-small btn-outline" (click)="openEditMovie(movie, movieModal)">Edit</button>
+                <button class="btn btn-small btn-primary" (click)="openAddShow(movie, showModal)">Add Show</button>
+                <button (click)="deleteMovie(movie.id!)" class="btn btn-small btn-danger">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Modal for Add/Edit Movie -->
+    <ng-template #movieModal let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title">{{ editingMovie ? 'Edit Movie' : 'Add New Movie' }}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="movieForm" (ngSubmit)="submitMovie()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Title</label>
+            <input formControlName="title" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea formControlName="description" class="form-control" required></textarea>
+          </div>
+          <div class="form-group">
+            <label>Genre</label>
+            <input formControlName="genre" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label>Duration (minutes)</label>
+            <input formControlName="durationMinutes" type="number" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label>Rating</label>
+            <input formControlName="rating" type="number" step="0.1" min="0" max="10" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label>Poster URL</label>
+            <input formControlName="posterUrl" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label>Trailer URL</label>
+            <input formControlName="trailerUrl" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label>Language</label>
+            <input formControlName="language" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label>Release Date</label>
+            <input formControlName="releaseDate" type="date" class="form-control" required />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+          <button type="submit" class="btn btn-primary" [disabled]="movieForm.invalid">{{ editingMovie ? 'Update' : 'Add' }}</button>
+        </div>
+      </form>
+    </ng-template>
+
+    <!-- Modal for Add Show -->
+    <ng-template #showModal let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title">Add Show for {{ selectedMovieForShow?.title }}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="showForm" (ngSubmit)="submitShow()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Screen</label>
+            <select formControlName="screenId" class="form-control" required>
+              <option value="">Select a screen</option>
+              <option *ngFor="let screen of screens" [value]="screen.id">
+                {{ screen.name }} - {{ screen.theaterName || 'Unknown Theater' }} ({{ screen.totalRows }}x{{ screen.totalColumns }} seats)
+              </option>
+            </select>
+            <small class="form-text text-muted">Select the screen where this show will be displayed</small>
+          </div>
+          <div class="form-group">
+            <label>Show Time</label>
+            <input formControlName="showTime" type="datetime-local" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label>Gold Seat Price</label>
+            <input formControlName="goldSeatPrice" type="number" step="0.01" min="0" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label>Silver Seat Price</label>
+            <input formControlName="silverSeatPrice" type="number" step="0.01" min="0" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label>VIP Seat Price</label>
+            <input formControlName="vipSeatPrice" type="number" step="0.01" min="0" class="form-control" required />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+          <button type="submit" class="btn btn-primary" [disabled]="showForm.invalid">Add Show</button>
+        </div>
+      </form>
+    </ng-template>
+
+    <!-- Modal for Add Theater -->
+     <!-- Modal for Add Theater with Screen -->
+<ng-template #theaterModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{ editingTheater ? 'Edit Theater' : 'Add New Theater with Screen' }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <form [formGroup]="theaterForm" (ngSubmit)="submitTheater(modal)">
+    <div class="modal-body">
+      <h5>Theater Details</h5>
+      <div class="form-group">
+        <label>Name</label>
+        <input formControlName="name" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label>Address</label>
+        <input formControlName="address" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label>City</label>
+        <input formControlName="city" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label>State</label>
+        <input formControlName="state" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label>Pincode</label>
+        <input formControlName="pincode" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input formControlName="phoneNumber" class="form-control" required />
+      </div>
+
+      <hr />
+      <div formGroupName="screens">
+      <h5>Screen Details</h5>
+      <div class="form-group">
+        <label>Screen Name</label>
+        <input formControlName="name" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label>Total Rows </label>
+        <input type="number" formControlName="totalRows" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label>Total Columns</label>
+        <input type="number" formControlName="totalColumns" class="form-control" required />
+      
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="theaterForm.invalid">
+        {{ editingTheater ? 'Update' : 'Add' }}
+      </button>
+    </div>
+    </div>
+  </form>
+</ng-template>
+
+
+  </div>
+</div> 
