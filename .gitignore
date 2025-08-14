@@ -1,0 +1,17 @@
+# Backend ignores
+backend/target/
+backend/.idea/
+backend/.classpath
+backend/.project
+backend/.settings/
+
+# Frontend ignores
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/cache/
+frontend/.env
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+*.log
