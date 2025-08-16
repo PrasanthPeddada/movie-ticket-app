@@ -1,6 +1,15 @@
 package com.movieticket.service;
 
+import com.movieticket.entity.Booking;
 import com.movieticket.entity.User;
+import com.movieticket.entity.BookedSeat;
+import com.movieticket.exception.ResourceNotFoundException;
+import com.movieticket.repository.BookingRepository;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -12,6 +21,9 @@ public class EmailService {
 
    @Autowired
 private JavaMailSender mailSender;
+
+@Autowired
+private BookingRepository bookingRepo;
    
     @Value("${spring.mail.username}")
 private String fromEmail; // Inject from application.properties
@@ -49,6 +61,16 @@ public void sendVerificationEmail(User user) {
        if (user == null || user.getEmail() == null) {
         throw new IllegalArgumentException("User or email must not be null");
     }
+    
+    Booking booking = bookingRepo.findByBookingId(bookingId);
+      Set<BookedSeat> seats= booking.getBookedSeats();
+
+      
+
+      String seatNumbers = seats.stream()
+            .map(seat -> getSeatNumber(seat.getRowNumber(), seat.getColumnNumber())) // assuming getSeatNumber() exists
+            .collect(Collectors.joining(", "));
+            
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(fromEmail);
         message.setTo(user.getEmail());
@@ -63,5 +85,11 @@ public void sendVerificationEmail(User user) {
                 "Best regards,\nMovie Ticket Booking Team");
 
         mailSender.send(message);
+
+        
+    }
+    public String getSeatNumber(Integer rowNumber,Integer columnNumber){   
+    char rowLetter = (char) ('A' + rowNumber - 1);
+    return String.format("%s%d", rowLetter, columnNumber);
     }
 }

@@ -80,13 +80,7 @@ export class AdminMoviesComponent implements OnInit {
     this.loadMovies();
     this.loadScreens();
   }
-  createScreenGroup(): FormGroup {
-  return this.fb.group({
-    name: ['', Validators.required],
-    totalRows: ['', [Validators.required, Validators.min(1)]],
-    totalColumns: ['', [Validators.required, Validators.min(1)]]
-  });
-}
+  
 
   loadMovies() {
     this.loading = true;

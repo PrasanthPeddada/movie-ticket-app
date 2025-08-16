@@ -146,4 +146,11 @@ export class ProfileComponent implements OnInit {
   get pf() {
     return this.passwordForm.controls;
   }
+
+  getSeatNumbers(bookedSeats: any[]): string {
+  return bookedSeats.map(seat => {
+    const rowLetter = String.fromCharCode(64 + seat.rowNumber); // 1 -> A, 2 -> B, etc.
+    return `${rowLetter}${seat.columnNumber}`;
+  }).join(', ');
+}
 } 

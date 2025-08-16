@@ -125,6 +125,8 @@ public class BookedSeat {
         this.seatCategory = seatCategory;
     }
 
+    
+
     public BigDecimal getPrice() {
         return price;
     }

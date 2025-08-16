@@ -140,6 +140,7 @@
               <h4>{{ booking.show.movie.title }}</h4>
               <p>{{ booking.show.showTime | date:'medium' }}</p>
               <p>{{ booking.show.screen.theater.name }} - Screen {{ booking.show.screen.name }}</p>
+               <p>Seats: {{ getSeatNumbers(booking.bookedSeats) }}</p>
             </div>
             <div class="booking-status">
               <span class="status-badge" [class]="booking.status.toLowerCase()">

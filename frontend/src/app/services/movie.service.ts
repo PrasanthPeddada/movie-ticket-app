@@ -16,7 +16,7 @@ export class MovieService {
     return this.http.get<Movie[]>(this.apiUrl);
   }
 
-  // Get all movies including inactive (admin)
+  
   getAllMoviesAdmin(): Observable<Movie[]> {
     return this.http.get<Movie[]>(`${this.apiUrl}/admin/all`);
   }
@@ -118,18 +118,10 @@ export class MovieService {
     return this.http.get<Movie[]>(`${this.apiUrl}/language/${language}`);
   }
 
-  // Get movies by director
-  getMoviesByDirector(director: string): Observable<Movie[]> {
-    return this.http.get<Movie[]>(`${this.apiUrl}/director/${director}`);
-  }
-
   // Get movies by rating
   getMoviesByRating(minRating: number): Observable<Movie[]> {
     return this.http.get<Movie[]>(`${this.apiUrl}/rating/${minRating}`);
   }
 
-  // Get movie statistics (admin)
-  getMovieStats(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/admin/stats`);
-  }
+  
 } 

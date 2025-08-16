@@ -98,6 +98,7 @@ public class BookingService {
                 booking.getBookingId(),
                 booking.getShow().getMovie().getTitle(),
                 booking.getShow().getShowTime().toString()
+        
         );
 
         // Prepare response
