@@ -1,13 +1,10 @@
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movieticket.MovieTicketBookingApplication;
-import com.movieticket.entity.Movie;
-import com.movieticket.repository.MovieRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
+
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,19 +12,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(classes = MovieTicketBookingApplication.class)
-//@ActiveProfiles("test")
 @AutoConfigureMockMvc(addFilters = false)
-@Transactional // Ensures each test rolls back changes automatically
+@Transactional 
 class MovieControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private MovieRepository movieRepository;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+    
 
     @Test
     void testCreateMovie() throws Exception {

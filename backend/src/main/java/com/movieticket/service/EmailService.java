@@ -1,14 +1,7 @@
 package com.movieticket.service;
 
-import com.movieticket.entity.Booking;
-import com.movieticket.entity.User;
-import com.movieticket.entity.BookedSeat;
-import com.movieticket.exception.ResourceNotFoundException;
-import com.movieticket.repository.BookingRepository;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
+import com.movieticket.entity.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,11 +15,10 @@ public class EmailService {
    @Autowired
 private JavaMailSender mailSender;
 
-@Autowired
-private BookingRepository bookingRepo;
+
    
     @Value("${spring.mail.username}")
-private String fromEmail; // Inject from application.properties
+private String fromEmail; 
 
 public void sendVerificationEmail(User user) {
     SimpleMailMessage message = new SimpleMailMessage();
@@ -62,15 +54,6 @@ public void sendVerificationEmail(User user) {
         throw new IllegalArgumentException("User or email must not be null");
     }
     
-    Booking booking = bookingRepo.findByBookingId(bookingId);
-      Set<BookedSeat> seats= booking.getBookedSeats();
-
-      
-
-      String seatNumbers = seats.stream()
-            .map(seat -> getSeatNumber(seat.getRowNumber(), seat.getColumnNumber())) // assuming getSeatNumber() exists
-            .collect(Collectors.joining(", "));
-            
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(fromEmail);
         message.setTo(user.getEmail());
