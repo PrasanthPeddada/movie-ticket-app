@@ -24,7 +24,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
-import { EmailVerificationComponent } from './email/email-verification/email-verification.component';
+import { EmailVerificationComponent } from './components/auth/email-verification/email-verification.component';
 import { ForgotPasswordComponent } from './components/auth/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/auth/reset-password/reset-password/reset-password.component';
 import { AdminFeedbackComponent } from './components/admin/admin-feedback/admin-feedback.component';

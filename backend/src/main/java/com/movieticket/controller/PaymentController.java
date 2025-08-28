@@ -2,6 +2,7 @@ package com.movieticket.controller;
 
 import com.movieticket.entity.Booking;
 import com.movieticket.service.BookingService;
+import com.movieticket.service.EmailService;
 import com.movieticket.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,9 @@ public class PaymentController {
 
     @Autowired
     private BookingService bookingService;
+
+    @Autowired
+    private EmailService emailService;
 
     @PostMapping("/create-order/{bookingId}")
     public ResponseEntity<?> createPaymentOrder(@PathVariable Long bookingId) {
@@ -64,6 +68,12 @@ public class PaymentController {
                 booking.setPaymentId(paymentId);
                 booking.setTransactionId(orderId);
                 bookingService.updateBooking(booking);
+
+                emailService.sendBookingConfirmationEmail(booking.getUser(), bookingId,  booking.getShow().getMovie().getTitle(),
+                booking.getShow().getShowTime().toString());
+
+                
+
 
                 Map<String, Object> response = new HashMap<>();
                 response.put("success", true);

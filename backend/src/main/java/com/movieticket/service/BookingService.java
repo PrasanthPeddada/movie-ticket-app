@@ -92,14 +92,6 @@ public class BookingService {
             bookedSeatRepository.save(bookedSeat);
         }
 
-        // Send confirmation email
-        emailService.sendBookingConfirmationEmail(
-                booking.getUser(),
-                booking.getBookingId(),
-                booking.getShow().getMovie().getTitle(),
-                booking.getShow().getShowTime().toString()
-        
-        );
 
         // Prepare response
         Map<String, Object> response = new HashMap<>();
