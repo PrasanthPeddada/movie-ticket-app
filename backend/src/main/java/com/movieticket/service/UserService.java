@@ -1,5 +1,6 @@
 package com.movieticket.service;
 
+import com.movieticket.dto.userDTO;
 import com.movieticket.entity.User;
 import com.movieticket.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -128,8 +130,13 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<userDTO> getAllUsers() {
+        List<User> users= userRepository.findAll();
+        List<userDTO> usersDtos=users.stream()
+                                        .map((user) -> new userDTO(user))
+                                        .collect(Collectors.toList());
+
+        return usersDtos;
     }
 
     public List<User> getActiveUsers() {

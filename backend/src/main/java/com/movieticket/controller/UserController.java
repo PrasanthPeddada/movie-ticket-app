@@ -1,5 +1,6 @@
 package com.movieticket.controller;
 
+import com.movieticket.dto.userDTO;
 import com.movieticket.entity.User;
 import com.movieticket.service.JwtService;
 import com.movieticket.service.UserService;
@@ -28,8 +29,8 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
+    public ResponseEntity<List<userDTO>> getAllUsers() {
+        List<userDTO> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
 
