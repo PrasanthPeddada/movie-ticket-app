@@ -78,7 +78,7 @@ export class AdminDashboardComponent implements OnInit {
       next: (bookings) => {
         console.log('Bookings loaded:', bookings.length);
         this.totalBookings = bookings.length;
-        this.recentBookings = bookings.slice(-5); // Get last 5 bookings
+        this.recentBookings = bookings.reverse().slice(0,5); // Get last 5 bookings
         this.loading = false;
       },
       error: (error) => {

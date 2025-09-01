@@ -69,7 +69,7 @@ public class PaymentController {
                 booking.setTransactionId(orderId);
                 bookingService.updateBooking(booking);
 
-                emailService.sendBookingConfirmationEmail(booking.getUser(), bookingId,  booking.getShow().getMovie().getTitle(),
+                emailService.sendBookingConfirmationEmail(booking.getUser(), booking.getBookingId(),  booking.getShow().getMovie().getTitle(),
                 booking.getShow().getShowTime().toString());
 
                 
