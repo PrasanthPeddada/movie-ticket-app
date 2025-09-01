@@ -5,6 +5,7 @@ import com.movieticket.entity.Movie;
 import com.movieticket.entity.Screen;
 import com.movieticket.entity.Show;
 import com.movieticket.entity.Theater;
+import com.movieticket.dto.bookingResponseDto;
 import com.movieticket.entity.BookedSeat;
 import com.movieticket.entity.User;
 import com.movieticket.repository.BookingRepository;
@@ -136,169 +137,22 @@ public class BookingService {
         bookingRepository.save(booking);
     }
 
-    public List<Map<String,Object>> getBookingsByUser(Long userId) {
+    public List<bookingResponseDto> getBookingsByUser(Long userId) {
         List<Booking> bookings= bookingRepository.findBookingsWithDetailsByUserId(userId);
-        List<Map<String, Object>> bookingResponses = new ArrayList<>();
+        List<bookingResponseDto> bookingResponses = new ArrayList<>();
             for (Booking booking : bookings) {
-                Map<String, Object> bookingResponse = new HashMap<>();
-                bookingResponse.put("id", booking.getId());
-                bookingResponse.put("bookingId", booking.getBookingId());
-                bookingResponse.put("totalAmount", booking.getTotalAmount());
-                bookingResponse.put("status", booking.getStatus());
-                bookingResponse.put("paymentMethod", booking.getPaymentMethod());
-                bookingResponse.put("bookingDate", booking.getBookingDate());
-                bookingResponse.put("createdAt", booking.getCreatedAt());
-                bookingResponse.put("updatedAt", booking.getUpdatedAt());
-                bookingResponse.put("bookedSeats", booking.getBookedSeats());
-
-                // Add show with movie information
-                Show show = booking.getShow();
-                Map<String, Object> showResponse = new HashMap<>();
-                showResponse.put("id", show.getId());
-                showResponse.put("showTime", show.getShowTime());
-                showResponse.put("goldSeatPrice", show.getGoldSeatPrice());
-                showResponse.put("silverSeatPrice", show.getSilverSeatPrice());
-                showResponse.put("vipSeatPrice", show.getVipSeatPrice());
-                showResponse.put("createdAt", show.getCreatedAt());
-                showResponse.put("updatedAt", show.getUpdatedAt());
-                showResponse.put("active", show.isActive());
-
-                // Add movie information
-                Movie movie = show.getMovie();
-                Map<String, Object> movieResponse = new HashMap<>();
-                movieResponse.put("id", movie.getId());
-                movieResponse.put("title", movie.getTitle());
-                movieResponse.put("description", movie.getDescription());
-                movieResponse.put("genre", movie.getGenre());
-                movieResponse.put("language", movie.getLanguage());
-                movieResponse.put("durationMinutes", movie.getDurationMinutes());
-                movieResponse.put("posterUrl", movie.getPosterUrl());
-                movieResponse.put("trailerUrl", movie.getTrailerUrl());
-                movieResponse.put("rating", movie.getRating());
-                movieResponse.put("releaseDate", movie.getReleaseDate());
-                movieResponse.put("isActive", movie.isActive());
-                movieResponse.put("createdAt", movie.getCreatedAt());
-                movieResponse.put("updatedAt", movie.getUpdatedAt());
-
-                showResponse.put("movie", movieResponse);
-
-                // Add screen and theater information
-                Screen screen = show.getScreen();
-                Map<String, Object> screenResponse = new HashMap<>();
-                screenResponse.put("id", screen.getId());
-                screenResponse.put("name", screen.getName());
-                screenResponse.put("totalRows", screen.getTotalRows());
-                screenResponse.put("totalColumns", screen.getTotalColumns());
-                screenResponse.put("createdAt", screen.getCreatedAt());
-                screenResponse.put("updatedAt", screen.getUpdatedAt());
-                screenResponse.put("active", screen.isActive());
-
-                Theater theater = screen.getTheater();
-                Map<String, Object> theaterResponse = new HashMap<>();
-                theaterResponse.put("id", theater.getId());
-                theaterResponse.put("name", theater.getName());
-                theaterResponse.put("address", theater.getAddress());
-                theaterResponse.put("city", theater.getCity());
-                theaterResponse.put("state", theater.getState());
-                theaterResponse.put("pincode", theater.getPincode());
-                theaterResponse.put("phoneNumber", theater.getPhoneNumber());
-                theaterResponse.put("createdAt", theater.getCreatedAt());
-                theaterResponse.put("updatedAt", theater.getUpdatedAt());
-                theaterResponse.put("active", theater.isActive());
-
-                screenResponse.put("theater", theaterResponse);
-                showResponse.put("screen", screenResponse);
-
-                bookingResponse.put("show", showResponse);
+                 bookingResponseDto bookingResponse=new bookingResponseDto(booking);
                 bookingResponses.add(bookingResponse);
             }
             return bookingResponses;
     }
 
-    public List<Map<String,Object>> getAllBookings(){
+    public List<bookingResponseDto> getAllBookings(){
 
         List<Booking> bookings= bookingRepository.findAll();
-        List<Map<String, Object>> bookingResponses = new ArrayList<>();
+        List<bookingResponseDto> bookingResponses = new ArrayList<>();
             for (Booking booking : bookings) {
-                Map<String, Object> bookingResponse = new HashMap<>();
-                bookingResponse.put("id", booking.getId());
-                bookingResponse.put("bookingId", booking.getBookingId());
-                bookingResponse.put("totalAmount", booking.getTotalAmount());
-                bookingResponse.put("status", booking.getStatus());
-                bookingResponse.put("paymentMethod", booking.getPaymentMethod());
-                bookingResponse.put("bookingDate", booking.getBookingDate());
-                bookingResponse.put("createdAt", booking.getCreatedAt());
-                bookingResponse.put("updatedAt", booking.getUpdatedAt());
-                bookingResponse.put("bookedSeats", booking.getBookedSeats());
-
-                // Add show with movie information
-                Show show = booking.getShow();
-                Map<String, Object> showResponse = new HashMap<>();
-                showResponse.put("id", show.getId());
-                showResponse.put("showTime", show.getShowTime());
-                showResponse.put("goldSeatPrice", show.getGoldSeatPrice());
-                showResponse.put("silverSeatPrice", show.getSilverSeatPrice());
-                showResponse.put("vipSeatPrice", show.getVipSeatPrice());
-                showResponse.put("createdAt", show.getCreatedAt());
-                showResponse.put("updatedAt", show.getUpdatedAt());
-                showResponse.put("active", show.isActive());
-
-                User user = booking.getUser();
-                Map<String, Object> userResponse = new HashMap<>();
-                userResponse.put("id", user.getId());   
-                userResponse.put("name", user.getName());
-                userResponse.put("email", user.getEmail());
-                userResponse.put("phoneNumber", user.getPhoneNumber());
-                
-
-                // Add movie information
-                Movie movie = show.getMovie();
-                Map<String, Object> movieResponse = new HashMap<>();
-                movieResponse.put("id", movie.getId());
-                movieResponse.put("title", movie.getTitle());
-                movieResponse.put("description", movie.getDescription());
-                movieResponse.put("genre", movie.getGenre());
-                movieResponse.put("language", movie.getLanguage());
-                movieResponse.put("durationMinutes", movie.getDurationMinutes());
-                movieResponse.put("posterUrl", movie.getPosterUrl());
-                movieResponse.put("trailerUrl", movie.getTrailerUrl());
-                movieResponse.put("rating", movie.getRating());
-                movieResponse.put("releaseDate", movie.getReleaseDate());
-                movieResponse.put("isActive", movie.isActive());
-                movieResponse.put("createdAt", movie.getCreatedAt());
-                movieResponse.put("updatedAt", movie.getUpdatedAt());
-
-                showResponse.put("movie", movieResponse);
-
-                // Add screen and theater information
-                Screen screen = show.getScreen();
-                Map<String, Object> screenResponse = new HashMap<>();
-                screenResponse.put("id", screen.getId());
-                screenResponse.put("name", screen.getName());
-                screenResponse.put("totalRows", screen.getTotalRows());
-                screenResponse.put("totalColumns", screen.getTotalColumns());
-                screenResponse.put("createdAt", screen.getCreatedAt());
-                screenResponse.put("updatedAt", screen.getUpdatedAt());
-                screenResponse.put("active", screen.isActive());
-
-                Theater theater = screen.getTheater();
-                Map<String, Object> theaterResponse = new HashMap<>();
-                theaterResponse.put("id", theater.getId());
-                theaterResponse.put("name", theater.getName());
-                theaterResponse.put("address", theater.getAddress());
-                theaterResponse.put("city", theater.getCity());
-                theaterResponse.put("state", theater.getState());
-                theaterResponse.put("pincode", theater.getPincode());
-                theaterResponse.put("phoneNumber", theater.getPhoneNumber());
-                theaterResponse.put("createdAt", theater.getCreatedAt());
-                theaterResponse.put("updatedAt", theater.getUpdatedAt());
-                theaterResponse.put("active", theater.isActive());
-
-                screenResponse.put("theater", theaterResponse);
-                showResponse.put("screen", screenResponse);
-
-                bookingResponse.put("show", showResponse);
-                bookingResponse.put("user", userResponse);
+               bookingResponseDto bookingResponse=new bookingResponseDto(booking);
         bookingResponses.add(bookingResponse);
     }
     return bookingResponses;
