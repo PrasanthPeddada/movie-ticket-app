@@ -59,7 +59,8 @@
             <div class="booking-info">
               <h4>{{ booking.show.movie.title }}</h4>
               <p>{{ booking.user.name}}</p>
-              <p>{{ booking.show.showTime | date:'medium' }}</p>
+              <p>Show time: {{ booking.show.showTime | date:'medium' }}</p>
+              <p>Booking date: {{booking.createdAt | date:'medium'}}</p>
             </div>
             <div class="booking-status">
               <span class="status-badge" [class]="booking.status.toLowerCase()">
