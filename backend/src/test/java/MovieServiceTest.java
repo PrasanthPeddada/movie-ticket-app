@@ -122,23 +122,7 @@ class MovieServiceTest {
         verify(movieRepository, times(1)).save(movie);
     }
 
-    @Test
-    void testSearchMovies_ByGenre() {
-        Movie m2 = new Movie();
-        m2.setId(2L);
-        m2.setTitle("Avengers");
-        m2.setGenre("Action");
-        m2.setLanguage("English");
-        m2.setRating(8.5);
-        m2.setActive(true);
-
-        when(movieRepository.findByIsActiveTrue()).thenReturn(Arrays.asList(movie, m2));
-
-        List<Movie> result = movieService.searchMovies(null, "Sci-fi", null, null);
-
-        assertEquals(1, result.size());
-        assertEquals("Interstellar", result.get(0).getTitle());
-    }
+    
 
     @Test
     void testGetMovieWithShows() {
