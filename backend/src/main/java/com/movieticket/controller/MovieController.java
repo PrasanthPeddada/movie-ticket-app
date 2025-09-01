@@ -107,17 +107,5 @@ public class MovieController {
         }
     }
 
-    @GetMapping("/upcoming")
-    public ResponseEntity<List<Movie>> getUpcomingMovies() {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime endDate = now.plusMonths(3);
-        List<Movie> movies = movieService.getMoviesByReleaseDateRange(now, endDate);
-        return ResponseEntity.ok(movies);
-    }
-
-    @GetMapping("/top-rated")
-    public ResponseEntity<List<Movie>> getTopRatedMovies(@RequestParam(defaultValue = "4.0") Double minRating) {
-        List<Movie> movies = movieService.getMoviesByRating(minRating);
-        return ResponseEntity.ok(movies);
-    }
+    
 }

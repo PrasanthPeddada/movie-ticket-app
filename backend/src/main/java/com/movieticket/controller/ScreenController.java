@@ -38,11 +38,7 @@ public class ScreenController {
         return ResponseEntity.ok(screens);
     }
 
-    @GetMapping("/theater/{theaterId}/count")
-    public ResponseEntity<Long> getScreenCountByTheater(@PathVariable Long theaterId) {
-        Long count = screenService.getScreenCountByTheater(theaterId);
-        return ResponseEntity.ok(count);
-    }
+    
 
     @PostMapping
     public ResponseEntity<?> createScreen(@Valid @RequestBody Screen screen) {

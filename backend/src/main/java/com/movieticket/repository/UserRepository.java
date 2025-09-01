@@ -25,9 +25,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.role = 'ADMIN' AND u.isActive = true")
     List<User> findAllActiveAdmins();
 
-    @Query("SELECT COUNT(u) FROM User u WHERE u.createdAt >= :startDate AND u.createdAt <= :endDate")
-    Long countUsersByDateRange(@Param("startDate") java.time.LocalDateTime startDate,
-            @Param("endDate") java.time.LocalDateTime endDate);
+    
 
     @Query("SELECT u FROM User u WHERE u.isActive = :isActive")
     List<User> findByActiveStatus(@Param("isActive") boolean isActive);

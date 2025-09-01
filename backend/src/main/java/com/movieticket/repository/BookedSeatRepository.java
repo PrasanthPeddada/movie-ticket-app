@@ -21,14 +21,7 @@ public interface BookedSeatRepository extends JpaRepository<BookedSeat, Long> {
             @Param("rowNumber") Integer rowNumber,
             @Param("columnNumber") Integer columnNumber);
 
-    @Query("SELECT bs FROM BookedSeat bs WHERE bs.show.id = :showId AND bs.status = 'HOLD' AND bs.createdAt < :expiryTime")
-    List<BookedSeat> findExpiredHoldSeats(@Param("showId") Long showId, @Param("expiryTime") LocalDateTime expiryTime);
-
-    @Query("SELECT COUNT(bs) FROM BookedSeat bs WHERE bs.show.id = :showId AND bs.status = 'BOOKED'")
-    Long countBookedSeatsByShow(@Param("showId") Long showId);
-
-    @Query("SELECT COUNT(bs) FROM BookedSeat bs WHERE bs.show.id = :showId AND bs.status = 'HOLD'")
-    Long countHoldSeatsByShow(@Param("showId") Long showId);
+   
 
     @Query("SELECT bs FROM BookedSeat bs WHERE bs.booking.id = :bookingId")
     List<BookedSeat> findByBookingId(@Param("bookingId") Long bookingId);

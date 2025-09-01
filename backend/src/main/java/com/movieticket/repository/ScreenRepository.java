@@ -18,6 +18,5 @@ public interface ScreenRepository extends JpaRepository<Screen, Long> {
     @Query("SELECT s FROM Screen s WHERE s.theater.id = :theaterId AND s.isActive = true")
     List<Screen> findActiveScreensByTheater(@Param("theaterId") Long theaterId);
 
-    @Query("SELECT COUNT(s) FROM Screen s WHERE s.theater.id = :theaterId AND s.isActive = true")
-    Long countActiveScreensByTheater(@Param("theaterId") Long theaterId);
+   
 }

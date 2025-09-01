@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
-        List<Booking> findByUserIdOrderByBookingDateDesc(Long userId);
+       
 
         @Query("SELECT b FROM Booking b " +
                         "LEFT JOIN FETCH b.show s " +
@@ -24,7 +24,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
         List<Booking> findByShowId(Long showId);
 
-        List<Booking> findByStatus(Booking.BookingStatus status);
+       
 
          Booking findByBookingId( String bookingIdLong);
 }

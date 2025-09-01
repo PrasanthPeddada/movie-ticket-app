@@ -36,10 +36,7 @@ public class ScreenService {
         return screenRepository.findByTheaterIdAndIsActiveTrue(theaterId);
     }
 
-    public Long getScreenCountByTheater(Long theaterId) {
-        return screenRepository.countActiveScreensByTheater(theaterId);
-    }
-
+    
     public Screen createScreen(Screen screen) {
         // Verify theater exists
         Theater theater = theaterRepository.findById(screen.getTheater().getId()).orElseThrow(() ->  new RuntimeException("theater not found"));
@@ -68,9 +65,5 @@ public class ScreenService {
         screenRepository.save(screen);
     }
 
-    public boolean isScreenAvailable(Long screenId, LocalDateTime startTime, LocalDateTime endTime) {
-        // This would typically check for conflicting shows
-        // For now, we'll return true
-        return true;
-    }
+   
 }

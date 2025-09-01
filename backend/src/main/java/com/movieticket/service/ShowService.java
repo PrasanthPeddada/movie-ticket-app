@@ -47,17 +47,11 @@ public class ShowService {
         return showRepository.findByTheaterIdAndIsActiveTrue(theaterId);
     }
 
-    public List<Show> getUpcomingShowsByMovie(Long movieId) {
-        return showRepository.findUpcomingShowsByMovie(movieId, LocalDateTime.now());
-    }
+    
 
-    public List<Show> getUpcomingShowsByTheater(Long theaterId) {
-        return showRepository.findUpcomingShowsByTheater(theaterId, LocalDateTime.now());
-    }
+   
 
-    public List<Show> getShowsByDateRange(LocalDateTime startTime, LocalDateTime endTime) {
-        return showRepository.findShowsByDateRange(startTime, endTime);
-    }
+   
 
     public Show createShow(Show show) {
         // Verify movie exists

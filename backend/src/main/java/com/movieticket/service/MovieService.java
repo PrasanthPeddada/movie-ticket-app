@@ -101,11 +101,5 @@ public class MovieService {
         movieRepository.save(movie);
     }
 
-    public List<Movie> getMoviesByReleaseDateRange(LocalDateTime startDate, LocalDateTime endDate) {
-        return movieRepository.findByReleaseDateBetween(startDate, endDate);
-    }
-
-    public List<Movie> getMoviesByRating(Double minRating) {
-        return movieRepository.findByRatingGreaterThanEqual(minRating);
-    }
+    
 }

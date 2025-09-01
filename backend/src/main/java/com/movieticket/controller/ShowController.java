@@ -9,8 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,11 +59,7 @@ public class ShowController {
         return ResponseEntity.ok(shows);
     }
 
-    @GetMapping("/movie/{movieId}/upcoming")
-    public ResponseEntity<List<Show>> getUpcomingShowsByMovie(@PathVariable Long movieId) {
-        List<Show> shows = showService.getUpcomingShowsByMovie(movieId);
-        return ResponseEntity.ok(shows);
-    }
+    
 
     @GetMapping("/screen/{screenId}")
     public ResponseEntity<List<Show>> getShowsByScreen(@PathVariable Long screenId) {
@@ -78,24 +73,9 @@ public class ShowController {
         return ResponseEntity.ok(shows);
     }
 
-    @GetMapping("/theater/{theaterId}/upcoming")
-    public ResponseEntity<List<Show>> getUpcomingShowsByTheater(@PathVariable Long theaterId) {
-        List<Show> shows = showService.getUpcomingShowsByTheater(theaterId);
-        return ResponseEntity.ok(shows);
-    }
+    
 
-    @GetMapping("/date-range")
-    public ResponseEntity<List<Show>> getShowsByDateRange(
-            @RequestParam String startTime,
-            @RequestParam String endTime) {
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-        LocalDateTime start = LocalDateTime.parse(startTime, formatter);
-        LocalDateTime end = LocalDateTime.parse(endTime, formatter);
-
-        List<Show> shows = showService.getShowsByDateRange(start, end);
-        return ResponseEntity.ok(shows);
-    }
+    
 
     @PostMapping
     public ResponseEntity<?> createShow(@Valid @RequestBody Show show) {

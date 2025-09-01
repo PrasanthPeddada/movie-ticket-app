@@ -157,9 +157,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public Long getTotalUsersByDateRange(LocalDateTime startDate, LocalDateTime endDate) {
-        return userRepository.countUsersByDateRange(startDate, endDate);
-    }
+    
 
     // Admin user management methods
     public User getUserById(Long id) {
